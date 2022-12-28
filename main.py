@@ -61,7 +61,31 @@ def HAT_RIGHT():
     vJoyDeviceOutput.set_button(16, 1)
 
 def HAT_LEFT():
-    vJoyDeviceOutput.set_button(17, 1)
+    vJoyDeviceOutput.set_button(25, 1)
+
+# SLEW
+def SLEW_UP():
+    vJoyDeviceOutput.set_button(26, 1)
+
+def SLEW_DOWN():
+    vJoyDeviceOutput.set_button(27, 1)
+
+def SLEW_RIGHT():
+    vJoyDeviceOutput.set_button(28, 1)
+
+def SLEW_LEFT():
+    vJoyDeviceOutput.set_button(29, 1)
+
+# SOI
+def SOI_UP():
+    vJoyDeviceOutput.set_button(30, 1)
+
+def SOI_RIGHT():
+    vJoyDeviceOutput.set_button(31, 1)
+
+def SOI_LEFT():
+    vJoyDeviceOutput.set_button(32, 1)
+
 
 mode = {"active": None}
 guide = {
@@ -77,13 +101,13 @@ guide = {
         "Right": DMS_RIGHT,
         "Left": DMS_LEFT
     },
-    18: { # CHINA HAT
+    1: { # CHINA HAT
         "Up": CH_FORWARD,
         "Down": CH_AFT,
         "Right": DUMMY,
         "Left": DUMMY
     },
-    19: { # BOAT SWITCH 
+    2: { # BOAT SWITCH 
         "Up": BS_FORWARD,
         "Down": BS_AFT,
         "Right": BS_CENTER,
@@ -94,6 +118,18 @@ guide = {
         "Down": HAT_DOWN,
         "Right": HAT_RIGHT,
         "Left": HAT_LEFT
+    },
+    19: { # SLEW
+        "Up": SLEW_UP,
+        "Down": SLEW_DOWN,
+        "Right": SLEW_RIGHT,
+        "Left": SLEW_LEFT
+    },
+    18: { # SOI
+        "Up": SOI_UP,
+        "Down": DUMMY,
+        "Right": SOI_RIGHT,
+        "Left": SOI_LEFT
     }
 }
 
@@ -108,23 +144,24 @@ def print_remove(joy):
 
 def key_received(key):
 
-    if key.keytype != Key.AXIS:
-        #print(f"-------\nValue: {key.value}\nNumber: {key.number}\nType: {key.keytype}")
+    #if key.number == 0:
+        #print("yw")
 
-        if key.number >= 16 and key.number <= 20:
+    if key.keytype != Key.AXIS:
+        print(f"-------\nValue: {key.value}\nNumber: {key.number}\nType: {key.keytype}")
+        if key.number >= 16 and key.number <= 20 or key.number == 2 or key.number == 1 and key.keytype == Key.BUTTON:
             #print("switching")
             mode["active"] = key.number
     if key.keytype == Key.HAT:
         hat_type = key.get_hat_name()
         if mode["active"] != None and hat_type not in FORBIDDEN_LIST:
-            for i in range(17):
+            for i in range(32):
                 vJoyDeviceOutput.set_button(i+1, 0)
             guide[mode["active"]][hat_type]()
         if hat_type == "Centered":
-            for i in range(17):
+            for i in range(32):
                 vJoyDeviceOutput.set_button(i+1, 0)
 
-        #Key.get_value()
-    
+    #print(mode)
 
 run_event_loop(print_add, print_remove, key_received)
