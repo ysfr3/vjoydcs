@@ -113,7 +113,7 @@ guide = {
         "Right": BS_CENTER,
         "Left": BS_CENTER
     },
-    20: { # HAT
+    3: { # HAT
         "Up": HAT_UP,
         "Down": HAT_DOWN,
         "Right": HAT_RIGHT,
@@ -149,7 +149,7 @@ def key_received(key):
 
     if key.keytype != Key.AXIS:
         print(f"-------\nValue: {key.value}\nNumber: {key.number}\nType: {key.keytype}")
-        if key.number >= 16 and key.number <= 20 or key.number == 2 or key.number == 1 and key.keytype == Key.BUTTON:
+        if key.number >= 16 and key.number <= 19 or key.number == 2 or key.number == 1 or key.number == 3 and key.keytype == Key.BUTTON:
             #print("switching")
             mode["active"] = key.number
     if key.keytype == Key.HAT:
